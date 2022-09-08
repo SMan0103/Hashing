@@ -4,8 +4,6 @@
 //import java library math
 import java.lang.Math;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 public class HashingV {
 
     public static void main(String[] args) throws Exception {
