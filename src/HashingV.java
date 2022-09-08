@@ -1,11 +1,16 @@
 
-// 2 minutter til at vi har fri ret poggers
+// Comments
+// er jeg den eneste der føler at det her er på grænsen til nemt?
 //import java library math
 import java.lang.Math;
+
+import javax.naming.spi.DirStateFactory.Result;
 
 public class HashingV {
 
     public static void main(String[] args) throws Exception {
+        String result = "";
+
         long startTime, endTime;
         int listSize = 2000000;
         int myList[] = new int[listSize];
@@ -14,13 +19,13 @@ public class HashingV {
 
         for (int i = 0; i < 1000000; i++) {
             number = (int) (Math.random() * 100000 + 1);
+            // Define number position?
             numberPos = (int) (((long) number * number) % listSize);
 
             // Check if number is already in array
             while (myList[numberPos] != 0) {
-                if (numberPos == listSize - 1) {
-                    numberPos = 0;
-                }
+
+                numberPos = (numberPos + 1) % listSize;
             }
             myList[numberPos] = number;
         }
@@ -30,20 +35,14 @@ public class HashingV {
         number = 117;
         numberPos = (int) (((long) number * number) % listSize);
         while (myList[numberPos] != 0) {
-            if (myList[numberPos] == number) {
-                System.out.println("Number found at position " + number);
-                numberPos = (numberPos + 1) % listSize;
-                while (myList[numberPos] != 0) {
-                    if (numberPos == listSize - 1) {
-                        numberPos = 0;
-                    }
-                }
-
-            }
-
-            endTime = System.nanoTime();
-            System.out.println("Time taken," + ((endTime - startTime) / 100000d) + " ms.");
+            // vi mangler at angive result til et variabel
+            if (myList[numberPos] == number)
+                result += number + ", ";
+            numberPos = (numberPos + 1) % listSize;
 
         }
+        endTime = System.nanoTime();
+        System.out.println(result);
+        System.out.println("Time taken: " + ((endTime - startTime) / 100000d) + " ms.");
     }
 }
