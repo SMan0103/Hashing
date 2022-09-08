@@ -43,6 +43,6 @@ public class HashingV {
         }
         endTime = System.nanoTime();
         System.out.println(result);
-        System.out.println("Time taken: " + ((endTime - startTime) / 100000d) + " ms.");
+        System.out.println("Time taken: " + ((endTime - startTime) / 100000d) + " ms");
     }
 }
