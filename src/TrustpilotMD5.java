@@ -170,7 +170,7 @@ public class TrustpilotMD5 {
             if (TPHashing.MD5Hash(string1 + " " + string2 + " " + string3).equals("e4820b45d2277f3844eac66c903e84be")) {
               System.out.println(string1 + " " + string2 + " " + string3);
               System.out.println("Time: " + (System.nanoTime() - startTime) / 1000000000 + "ms");
-              System.exit(0);
+              System.exit(345);
             }
           }
         }
