@@ -3,19 +3,34 @@ import java.io.File; // Import the File class
 import java.io.FileReader;
 import java.io.BufferedReader;
 
-public class TrustpilotMD5 {
-  static String anagram = "poultry outwits ants";
-  static byte[] anagramChars = new byte[26];
-  static int anagramLength = anagram.length();
-  static ArrayList<String> wordList = new ArrayList<String>();
-  static long startTime;
+public class TrustpilotMD5 extends Thread {
+  private static String anagram = "poultry outwits ants";
+  private static byte[] anagramChars = new byte[26];
+  private static int anagramLength = anagram.length();
+  private static ArrayList<String> wordList = new ArrayList<String>();
+  private static long startTime;
 
-  TrustpilotMD5() {
+  private static int threadCount = 1;
+  private int threadNr;
+
+  private TrustpilotMD5() {
+  }
+
+  public TrustpilotMD5(int n) {
     startTime = System.nanoTime();
+    threadCount = n;
     anagramToArray();
-    reedWordList();
-    generateAnagrams();
+    readWordList();
+    // start threads
+    for (int i = 0; i < n; i++) {
+      TrustpilotMD5 tempThread = new TrustpilotMD5(i);
+      tempThread.threadNr = i;
+      tempThread.start();
+    }
+  }
 
+  public void run() {
+    generateAnagrams();
   }
 
   public static void anagramToArray() {
@@ -120,7 +135,7 @@ public class TrustpilotMD5 {
     return true;
   }
 
-  public static void reedWordList() {
+  public static void readWordList() {
     try {
       File myFile = new File("wordlist.txt");
       FileReader myFileReader = new FileReader(myFile);
@@ -131,7 +146,7 @@ public class TrustpilotMD5 {
 
       while ((word = myReader.readLine()) != null) {
         if (lettersAvailable(word)) {
-          System.out.println(word);
+          // System.out.println(word); // Printer ordListe ud.
           if (!word.equals(lastWord)) {
             if (word.length() > 1) {
               wordList.add(word);
@@ -160,17 +175,20 @@ public class TrustpilotMD5 {
   public void generateAnagrams() {
     // generate 3 word sentences from the word we get
     // isAnagram(string1, anagram);
-    for (int i = 0; i < wordList.size(); i++) {
+    for (int i = 0 + threadNr; i < wordList.size(); i += threadCount) {
       String string1 = wordList.get(i);
       for (int j = 0; j < wordList.size(); j++) {
         String string2 = wordList.get(j);
-        for (int k = 0; k < wordList.size(); k++) {
-          String string3 = wordList.get(k);
-          if (isAnagram(string1 + " " + string2 + " " + string3)) {
-            if (TPHashing.MD5Hash(string1 + " " + string2 + " " + string3).equals("e4820b45d2277f3844eac66c903e84be")) {
-              System.out.println(string1 + " " + string2 + " " + string3);
-              System.out.println("Time: " + (System.nanoTime() - startTime) / 1000000000 + "ms");
-              System.exit(345);
+        if (lettersAvailable(wordList.get(i) + wordList.get(j))) {
+          for (int k = 0; k < wordList.size(); k++) {
+            String string3 = wordList.get(k);
+            if (isAnagram(string1 + " " + string2 + " " + string3)) {
+              if (TPHashing.MD5Hash(string1 + " " + string2 + " " + string3)
+                  .equals("e4820b45d2277f3844eac66c903e84be")) {
+                System.out.println(string1 + " " + string2 + " " + string3);
+                System.out.println("Time: " + ((System.nanoTime() - startTime) / 1000000000) + "s");
+                System.exit(0);
+              }
             }
           }
         }
