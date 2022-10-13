@@ -7,6 +7,6 @@ public class TPMain {
     // System.out.println(TrustpilotMD5.lettersAvailable("poultryoutwitsants"));
     // TrustpilotMD5.reedWordList();
 
-    new TrustpilotMD5(23);
+    new TrustpilotMD5(8);
   }
 }

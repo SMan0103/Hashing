@@ -23,7 +23,7 @@ public class TrustpilotMD5 extends Thread {
     readWordList();
     // start threads
     for (int i = 0; i < n; i++) {
-      TrustpilotMD5 tempThread = new TrustpilotMD5(i);
+      TrustpilotMD5 tempThread = new TrustpilotMD5();
       tempThread.threadNr = i;
       tempThread.start();
     }
@@ -173,18 +173,19 @@ public class TrustpilotMD5 extends Thread {
 
   // function for generating and checking anagrams
   public void generateAnagrams() {
+    int WS = wordList.size();
     // generate 3 word sentences from the word we get
     // isAnagram(string1, anagram);
-    for (int i = 0 + threadNr; i < wordList.size(); i += threadCount) {
+    for (int i = 0 + threadNr; i < WS; i += threadCount) {
       String string1 = wordList.get(i);
-      for (int j = 0; j < wordList.size(); j++) {
+      for (int j = 0; j < WS; j++) {
         String string2 = wordList.get(j);
         if (lettersAvailable(wordList.get(i) + wordList.get(j))) {
-          for (int k = 0; k < wordList.size(); k++) {
+          for (int k = 0; k < WS; k++) {
             String string3 = wordList.get(k);
             if (isAnagram(string1 + " " + string2 + " " + string3)) {
               if (TPHashing.MD5Hash(string1 + " " + string2 + " " + string3)
-                  .equals("e4820b45d2277f3844eac66c903e84be")) {
+                  .equals("23170acc097c24edb98fc5488ab033fe")) {
                 System.out.println(string1 + " " + string2 + " " + string3);
                 System.out.println("Time: " + ((System.nanoTime() - startTime) / 1000000000) + "s");
                 System.exit(0);
